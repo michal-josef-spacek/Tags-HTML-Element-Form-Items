@@ -1,0 +1,159 @@
+NAME
+    Tags::HTML::Element::Form::Items - Tags helper for HTML form element
+    with Items.
+
+SYNOPSIS
+     use Tags::HTML::Element::Form;
+
+     my $obj = Tags::HTML::Element::Form::Items->new(%params);
+     $obj->cleanup;
+     $obj->init(@items);
+     $obj->prepare;
+     $obj->process;
+     $obj->process_css;
+
+METHODS
+  "new"
+     my $obj = Tags::HTML::Element::Form::Items->new(%params);
+
+    Constructor.
+
+    *       "css"
+
+            'CSS::Struct::Output' object for "process_css" processing.
+
+            Default value is undef.
+
+    *       "tags"
+
+            'Tags::Output' object for "process" processing.
+
+            Default value is undef.
+
+  "init"
+     $obj->init(@items);
+
+    Initialize Tags structure for fields defined in @items.
+
+    Accepted items in @items are objects:
+
+    *   Data::HTML::Element::A
+
+    *   Data::HTML::Element::Button
+
+    *   Data::HTML::Element::Input
+
+    *   Data::HTML::Element::Select
+
+    *   Data::HTML::Element::Textarea
+
+    Returns undef.
+
+  "prepare"
+     $obj->prepare;
+
+    Process initialization before page run.
+
+    Do nothing in this object.
+
+    Returns undef.
+
+  "process"
+     $obj->process;
+
+    Process Tags structure to output.
+
+    Returns undef.
+
+  "process_css"
+     $obj->process_css;
+
+    Process CSS::Struct structure for output.
+
+    Returns undef.
+
+ERRORS
+     new():
+             From Class::Utils::set_params():
+                     Unknown parameter '%s'.
+             From Tags::HTML::new():
+                     Parameter 'css' must be a 'CSS::Struct::Output::*' class.
+                     Parameter 'tags' must be a 'Tags::Output::*' class.
+
+     init():
+             From Tags::HTML::init():
+                     Form object must be a 'Data::HTML::Element::Form' instance.
+
+     process():
+             From Tags::HTML::process():
+                     Parameter 'tags' isn't defined.
+
+     process_css():
+             From Tags::HTML::process_css():
+                     Parameter 'css' isn't defined.
+
+EXAMPLE
+     use strict;
+     use warnings;
+
+     use CSS::Struct::Output::Indent;
+     use Data::HTML::Element::Button;
+     use Data::HTML::Element::Input;
+     use Tags::HTML::Element::Form::Items;
+     use Tags::Output::Indent;
+
+     # Object.
+     my $css = CSS::Struct::Output::Indent->new;
+     my $tags = Tags::Output::Indent->new;
+     my $obj = Tags::HTML::Element::Form::Items->new(
+             'css' => $css,
+             'tags' => $tags,
+     );
+
+     my $input = Data::HTML::Element::Input->new(
+             'css_class' => 'input',
+             'id' => 'one',
+             'label' => 'Input field',
+     );
+
+     my $submit = Data::HTML::Element::Button->new(
+             'css_class' => 'submit',
+             'data' => ['Save'],
+             'type' => 'submit',
+     );
+
+     # Initialize.
+     $obj->init($input, $submit);
+
+     # Process form.
+     $obj->process;
+     $obj->process_css;
+
+     # Print out.
+     print $tags->flush;
+     print "\n\n";
+     print $css->flush;
+
+     # Output:
+     # TODO
+
+DEPENDENCIES
+    Class::Utils, Error::Pure, Scalar::Util, Tags::HTML,
+    Tags::HTML::Element::Utils.
+
+REPOSITORY
+    <https://github.com/michal-josef-spacek/Tags-HTML-Element-Form-Items>
+
+AUTHOR
+    Michal Josef Špaček <mailto:skim@cpan.org>
+
+    <http://skim.cz>
+
+LICENSE AND COPYRIGHT
+    © 2024 Michal Josef Špaček
+
+    BSD 2-Clause License
+
+VERSION
+    0.01
+
